@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-ValetparkingApplication<valetparking>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.valetparking.valetparking.ValetparkingApplication",
+            "projectName": "valetparking",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
