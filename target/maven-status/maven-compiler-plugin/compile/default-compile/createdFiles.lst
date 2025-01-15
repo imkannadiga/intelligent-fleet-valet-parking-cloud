@@ -1,0 +1,12 @@
+com/valetparking/valetparking/controllers/UGVController.class
+com/valetparking/valetparking/entities/UGV.class
+com/valetparking/valetparking/controllers/BaseController.class
+com/valetparking/valetparking/ServletInitializer.class
+com/valetparking/valetparking/repositories/UGVRepository.class
+com/valetparking/valetparking/handlers/SocketConnectionHandler.class
+com/valetparking/valetparking/configuration/WebSocketConfig.class
+com/valetparking/valetparking/misc/Status.class
+com/valetparking/valetparking/helpers/UGVHelper.class
+com/valetparking/valetparking/controllers/ValetParkingController.class
+com/valetparking/valetparking/services/UGVService.class
+com/valetparking/valetparking/ValetparkingApplication.class

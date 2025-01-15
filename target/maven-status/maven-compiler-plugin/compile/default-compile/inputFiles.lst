@@ -1,0 +1,12 @@
+/home/softdcar/Desktop/applications/ValetParkingService/valetparking/src/main/java/com/valetparking/valetparking/ServletInitializer.java
+/home/softdcar/Desktop/applications/ValetParkingService/valetparking/src/main/java/com/valetparking/valetparking/ValetparkingApplication.java
+/home/softdcar/Desktop/applications/ValetParkingService/valetparking/src/main/java/com/valetparking/valetparking/configuration/WebSocketConfig.java
+/home/softdcar/Desktop/applications/ValetParkingService/valetparking/src/main/java/com/valetparking/valetparking/controllers/BaseController.java
+/home/softdcar/Desktop/applications/ValetParkingService/valetparking/src/main/java/com/valetparking/valetparking/controllers/UGVController.java
+/home/softdcar/Desktop/applications/ValetParkingService/valetparking/src/main/java/com/valetparking/valetparking/controllers/ValetParkingController.java
+/home/softdcar/Desktop/applications/ValetParkingService/valetparking/src/main/java/com/valetparking/valetparking/entities/UGV.java
+/home/softdcar/Desktop/applications/ValetParkingService/valetparking/src/main/java/com/valetparking/valetparking/handlers/SocketConnectionHandler.java
+/home/softdcar/Desktop/applications/ValetParkingService/valetparking/src/main/java/com/valetparking/valetparking/helpers/UGVHelper.java
+/home/softdcar/Desktop/applications/ValetParkingService/valetparking/src/main/java/com/valetparking/valetparking/misc/Status.java
+/home/softdcar/Desktop/applications/ValetParkingService/valetparking/src/main/java/com/valetparking/valetparking/repositories/UGVRepository.java
+/home/softdcar/Desktop/applications/ValetParkingService/valetparking/src/main/java/com/valetparking/valetparking/services/UGVService.java
