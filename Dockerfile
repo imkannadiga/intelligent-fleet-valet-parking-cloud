@@ -8,7 +8,7 @@ RUN rm -rf /usr/local/tomcat/webapps/*
 COPY target/valetparking-0.0.1-SNAPSHOT.war /usr/local/tomcat/webapps/ROOT.war
 
 # Expose the Tomcat port
-EXPOSE 9000
+EXPOSE 12345
 
 # Start Tomcat
 CMD ["catalina.sh", "run"]
