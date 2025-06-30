@@ -1,3 +1,1 @@
-Valet parking cloud application
-
-<!TODO>
+# Valet Parking use case - Cloud applications
