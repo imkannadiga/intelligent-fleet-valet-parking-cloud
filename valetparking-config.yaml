@@ -92,8 +92,8 @@ spec:
             - name: JAVA_TOOL_OPTIONS
               value: >
                 -javaagent:/otel/opentelemetry-javaagent.jar
-                -Dotel.exporter.otlp.protocol=http
-                -Dotel.exporter.otlp.endpoint=http://otel-collector-opentelemetry-collector-agent.monitoring.svc.cluster.local:4318
+                -Dotel.exporter.otlp.protocol=grpc
+                -Dotel.exporter.otlp.endpoint=http://otel-collector-opentelemetry-collector-agent.monitoring.svc.cluster.local:4317
                 -Dotel.resource.attributes=service.name=controlserver,service.namespace=valetparking
             - name: OTEL_METRICS_EXPORTER
               value: "none"
@@ -156,8 +156,8 @@ spec:
             - name: JAVA_TOOL_OPTIONS
               value: >
                 -javaagent:/otel/opentelemetry-javaagent.jar
-                -Dotel.exporter.otlp.protocol=http
-                -Dotel.exporter.otlp.endpoint=http://otel-collector-opentelemetry-collector-agent.monitoring.svc.cluster.local:4318
+                -Dotel.exporter.otlp.protocol=grpc
+                -Dotel.exporter.otlp.endpoint=http://otel-collector-opentelemetry-collector-agent.monitoring.svc.cluster.local:4317
                 -Dotel.resource.attributes=service.name=mapserver,service.namespace=valetparking
             - name: OTEL_METRICS_EXPORTER
               value: "none"
@@ -218,8 +218,8 @@ spec:
             - name: JAVA_TOOL_OPTIONS
               value: >
                 -javaagent:/otel/opentelemetry-javaagent.jar
-                -Dotel.exporter.otlp.protocol=http
-                -Dotel.exporter.otlp.endpoint=http://otel-collector-opentelemetry-collector-agent.monitoring.svc.cluster.local:4318
+                -Dotel.exporter.otlp.protocol=grpc
+                -Dotel.exporter.otlp.endpoint=http://otel-collector-opentelemetry-collector-agent.monitoring.svc.cluster.local:4317
                 -Dotel.resource.attributes=service.name=ui-service,service.namespace=valetparking
             - name: OTEL_METRICS_EXPORTER
               value: "none"
@@ -281,8 +281,8 @@ spec:
             - name: JAVA_TOOL_OPTIONS
               value: >
                 -javaagent:/otel/opentelemetry-javaagent.jar
-                -Dotel.exporter.otlp.protocol=http
-                -Dotel.exporter.otlp.endpoint=http://otel-collector-opentelemetry-collector-agent.monitoring.svc.cluster.local:4318
+                -Dotel.exporter.otlp.protocol=grpc
+                -Dotel.exporter.otlp.endpoint=http://otel-collector-opentelemetry-collector-agent.monitoring.svc.cluster.local:4317
                 -Dotel.resource.attributes=service.name=parking-spot-manager,service.namespace=valetparking
             - name: OTEL_METRICS_EXPORTER
               value: "none"
@@ -344,8 +344,8 @@ spec:
             - name: JAVA_TOOL_OPTIONS
               value: >
                 -javaagent:/otel/opentelemetry-javaagent.jar
-                -Dotel.exporter.otlp.protocol=http
-                -Dotel.exporter.otlp.endpoint=http://otel-collector-opentelemetry-collector-agent.monitoring.svc.cluster.local:4318
+                -Dotel.exporter.otlp.protocol=grpc
+                -Dotel.exporter.otlp.endpoint=http://otel-collector-opentelemetry-collector-agent.monitoring.svc.cluster.local:4317
                 -Dotel.resource.attributes=service.name=valetparking,service.namespace=valetparking
             - name: OTEL_METRICS_EXPORTER
               value: "none"
