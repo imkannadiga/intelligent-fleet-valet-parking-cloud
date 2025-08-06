@@ -36,6 +36,20 @@ services:
     networks:
       - app_network
 
+  heartbeat:
+    build: ./heartbeat
+    container_name: heartbeat-service
+    image: imkannadiga/heartbeat-service:latest
+    restart: always
+    depends_on:
+      - mongo-database
+    environment:
+      - MONGO_URI=mongodb://mongo-database:27017/
+    ports:
+      - "10010:10010"
+    networks:
+      - app_network
+
   ui-service:
     build: ./ui-service
     container_name: ui-service

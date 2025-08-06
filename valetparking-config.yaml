@@ -184,6 +184,70 @@ spec:
   selector:
     app: mapserver
 ---
+# === BEGIN HEARTBEAT SERVICE ===
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: heartbeat
+  namespace: valetparking
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: heartbeat
+  template:
+    metadata:
+      labels:
+        app: heartbeat
+    spec:
+      initContainers:
+        - name: download-otel-agent
+          image: curlimages/curl:latest
+          command: ["/bin/sh", "-c"]
+          args:
+            - curl -sSL https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v2.16.0/opentelemetry-javaagent.jar -o /otel/opentelemetry-javaagent.jar
+          volumeMounts:
+            - name: otel-agent
+              mountPath: /otel
+      containers:
+        - name: heartbeat-service
+          image: imkannadiga/heartbeat-service:latest
+          ports:
+            - containerPort: 10010
+          env:
+            - name: MONGO_URI
+              value: "mongodb://mongo-database:27017/"
+            - name: JAVA_TOOL_OPTIONS
+              value: >
+                -javaagent:/otel/opentelemetry-javaagent.jar
+                -Dotel.exporter.otlp.protocol=grpc
+                -Dotel.exporter.otlp.endpoint=http://otel-collector-agent.monitoring.svc.cluster.local:4317
+                -Dotel.resource.attributes=service.name=heartbeat-service,service.namespace=valetparking
+            - name: OTEL_METRICS_EXPORTER
+              value: "none"
+            - name: OTEL_LOGS_EXPORTER
+              value: "none"
+          volumeMounts:
+            - name: otel-agent
+              mountPath: /otel
+              readOnly: true
+      volumes:
+        - name: otel-agent
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: heartbeat-service
+  namespace: valetparking
+spec:
+  type: NodePort
+  ports:
+    - port: 10010
+      nodePort: 30010
+  selector:
+    app: controlserver
+---
 # === BEGIN UI SERVICE ===
 apiVersion: apps/v1
 kind: Deployment

@@ -1,4 +1,4 @@
-package com.example.controlserver.Schedulers;
+package com.example.heartbeat.Schedulers;
 
 import java.util.HashMap;
 import java.util.List;
@@ -10,10 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.example.controlserver.Misc.UGVStatus;
-import com.example.controlserver.Models.UGV;
-import com.example.controlserver.Services.SocketConnectionHandler;
-import com.example.controlserver.Services.UGVService;
+import com.example.heartbeat.Misc.UGVStatus;
+import com.example.heartbeat.Models.UGV;
+import com.example.heartbeat.Services.UGVService;
 
 @Component
 public class UGVHeartbeatScheduler {
@@ -21,14 +20,11 @@ public class UGVHeartbeatScheduler {
     @Autowired
     private UGVService ugvService;
 
-    @Autowired
-    private SocketConnectionHandler socketConnectionHandler;
-
     private static final Logger logger = LoggerFactory.getLogger(UGVHeartbeatScheduler.class);
 
     @Scheduled(fixedDelay = 10000)
     public void broadcastUGVHeartBeat() {
-        logger.info("Started UGV heartbeat request broadcaster");
+        logger.info("Started UGV offline job");
 
         List<UGV> ugvList = ugvService.getAllUGVs();
 
@@ -36,11 +32,12 @@ public class UGVHeartbeatScheduler {
         request.put("request_type", "heartbeat");
         for(UGV ugv : ugvList) {
             try {
-                ugv.setStatus(UGVStatus.OFFLINE);
-                socketConnectionHandler.sendMessageToClient(ugv.getSessionId(), request);
-                ugvService.updateUGV(ugv.getId(), ugv);
+                if(System.currentTimeMillis() - ugv.getLastHeartbeat() > 5000) { 
+                    ugv.setStatus(UGVStatus.OFFLINE);
+                    ugvService.updateUGV(ugv.getId(), ugv);
+                }
             } catch (Exception e) {
-                logger.error("Error sending broadcase to UGV "+ugv.getId());
+                logger.error("Error updating UGV :: "+ugv.getId());
             }
         }
     }

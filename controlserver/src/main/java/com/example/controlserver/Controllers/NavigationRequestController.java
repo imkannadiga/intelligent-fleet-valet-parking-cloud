@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.controlserver.DTOs.CreateNavigationRequestDTO;
 import com.example.controlserver.Misc.JobStatus;
-import com.example.controlserver.Misc.UGVStatus;
 import com.example.controlserver.Models.NavigationRequest;
 import com.example.controlserver.Models.UGV;
 import com.example.controlserver.Services.NavigationRequestService;
