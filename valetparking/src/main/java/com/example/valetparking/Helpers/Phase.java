@@ -1,8 +1,10 @@
 package com.example.valetparking.Helpers;
 
 public enum Phase {
-    DRIVE_AWAY_LOCATION,
+    WAITING,
     DROP_OFF_LOCATION,
     PARKED,
-    BUSY
+    PICK_UP_LOCATION,
+    DRIVE_AWAY_LOCATION,
+    IN_PROGRESS
 }

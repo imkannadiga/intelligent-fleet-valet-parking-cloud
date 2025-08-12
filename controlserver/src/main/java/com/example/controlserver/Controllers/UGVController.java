@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-
+import org.springframework.web.bind.annotation.GetMapping;
 
 
 @RestController
@@ -60,6 +60,7 @@ public class UGVController {
 
         return ResponseEntity.ok(ugvService.setUGVSessionID(id, sessionId.get("sessionId")));
     }
+    
 
     /*
     

@@ -25,6 +25,7 @@ public class UGVHeartbeatController {
             ugv.setStatus(UGVStatus.ONLINE);
             ugv.setLastHeartbeat(System.currentTimeMillis()); // Update last heartbeat time
             ugvService.updateUGV(id, ugv);
+            // TODO: Add logic to handle heartbeat data if necessary
             return ResponseEntity.ok("Heartbeat updated successfully");
         } catch (Exception e) {
             return ResponseEntity.status(404).body("UGV not found");

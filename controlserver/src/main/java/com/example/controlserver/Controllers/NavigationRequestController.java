@@ -20,6 +20,7 @@ import com.example.controlserver.Models.UGV;
 import com.example.controlserver.Services.NavigationRequestService;
 import com.example.controlserver.Services.UGVService;
 
+
 @RestController
 @RequestMapping("/api/navigation-request")
 public class NavigationRequestController {
@@ -38,10 +39,6 @@ public class NavigationRequestController {
         if(ugv == null) {
             return ResponseEntity.badRequest().body("Invalid UGV ID. UGV not found");
         } 
-
-        /*if(ugv.getStatus() != UGVStatus.ONLINE) {
-            return ResponseEntity.badRequest().body("UGV not online");
-        }*/
 
         // Create NavigationRequest
         NavigationRequest navigationRequest = new NavigationRequest();
@@ -81,14 +78,34 @@ public class NavigationRequestController {
     }
 
     @PostMapping("/{id}/completed")
-    public ResponseEntity<Void> completeNavigationRequest(@RequestBody String id) {
+    public ResponseEntity<Void> completeNavigationRequest(@PathVariable String id) {
 
         NavigationRequest navReq = navigationRequestService.getNavigationRequestById(id);
         navReq.setJobStatus(JobStatus.COMPLETED);
-        navigationRequestService.generateCallBack(navReq.getId(), navReq.getCallbackURL());
         navigationRequestService.updateNavigationRequest(id, navReq);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{ugvId}/get-pending-job")
+    public ResponseEntity<?> getPendingJob(@PathVariable String ugvId) {
+        // Get and validate whether UGVId is valid
+        // Get pending navigation jobs for UGV
+        // If no pending requests, return empty list
+        if (!ugvService.isUGVIDValid(ugvId)) {
+            return ResponseEntity.badRequest().body("Invalid UGV ID");
+        }
+
+        List<NavigationRequest> pendingJobs = navigationRequestService.getPendingJobsByUGVId(ugvId);
+        if (pendingJobs.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        NavigationRequest pendingJob = pendingJobs.get(0);
+        pendingJob.setJobStatus(JobStatus.STARTED);
+        navigationRequestService.updateNavigationRequest(pendingJob.getId(), pendingJob);
+
+        return ResponseEntity.ok(pendingJob);
     }
 
 }

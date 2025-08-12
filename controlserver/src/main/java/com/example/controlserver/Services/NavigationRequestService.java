@@ -72,4 +72,8 @@ public class NavigationRequestService {
         return;
     }
 
+    public List<NavigationRequest> getPendingJobsByUGVId(String ugvId) {
+        return navigationRequestRepository.findByUgv_IdAndJobStatus(ugvId, JobStatus.PENDING);
+    }
+
 }

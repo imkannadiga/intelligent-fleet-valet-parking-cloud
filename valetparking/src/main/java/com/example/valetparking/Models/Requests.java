@@ -22,14 +22,9 @@ public class Requests {
 
     private String parkingSpotId;
 
-    private boolean stepTwoPending;
+    private boolean schedulerFlag;
 
-    public Requests(String ugvId, Phase currentPhase, Task currentTask, String currentJobId) {
-        this.ugvId = ugvId;
-        this.currentPhase = currentPhase;
-        this.currentTask = currentTask;
-        this.currentJobId = currentJobId;
-    }
+    private boolean finished;
 
     public String getUgvId() {
         return ugvId;
@@ -63,20 +58,31 @@ public class Requests {
         this.currentJobId = currentJobId;
     }
 
+    public String getParkingSpotId() {
+        return parkingSpotId;
+    }
+
     public void setParkingSpotId(String parkingSpotId) {
         this.parkingSpotId = parkingSpotId;
     }
 
-    public String getParkingSpotId() {
-        return this.parkingSpotId;
+    public boolean isSchedulerFlag() {
+        return schedulerFlag;
     }
 
-    public boolean isStepTwoPending() {
-        return stepTwoPending;
+    public void setSchedulerFlag(boolean schedulerFlag) {
+        this.schedulerFlag = schedulerFlag;
     }
 
-    public void setStepTwoPending(boolean stepTwoPending) {
-        this.stepTwoPending = stepTwoPending;
+    public boolean isFinished() {
+        return finished;
     }
+
+    public void setFinished(boolean finished) {
+        this.finished = finished;
+    }
+
+    
+    
 
 }

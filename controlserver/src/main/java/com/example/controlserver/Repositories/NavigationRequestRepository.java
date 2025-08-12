@@ -1,6 +1,7 @@
 package com.example.controlserver.Repositories;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
+// import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.example.controlserver.Models.NavigationRequest;
@@ -12,5 +13,8 @@ import com.example.controlserver.Misc.JobStatus;
 public interface NavigationRequestRepository extends MongoRepository<NavigationRequest, String>{
 
     List<NavigationRequest> findByJobStatus(JobStatus jobStatus);
+
+    // @Query("{ 'ugv.$id': ?0, 'jobStatus': ?1 }")
+    List<NavigationRequest> findByUgv_IdAndJobStatus(String ugvId, JobStatus jobStatus);
     
 }
