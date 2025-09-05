@@ -20,7 +20,10 @@ public class ControlHelper {
 
     @Autowired
     private RestTemplate restTemplate;
-    
+
+    @Autowired
+    private HeartbeatHelper heartbeatHelper;
+
     private final String CONTROL_SERVER_ADDRESS = "http://controlserver:10001/api";
 
     private final String CALLBACK_URL = "http://valetparking:9000/api/valetparking/action-complete";
@@ -37,7 +40,8 @@ public class ControlHelper {
 
         // Send message to control server
         @SuppressWarnings("rawtypes")
-        ResponseEntity<Map> resp = restTemplate.postForEntity(CONTROL_SERVER_ADDRESS+"/navigation-request", payload, Map.class);
+        ResponseEntity<Map> resp = restTemplate.postForEntity(CONTROL_SERVER_ADDRESS + "/navigation-request", payload,
+                Map.class);
         logger.info("Response from control server: " + resp.getBody());
 
         return (String) resp.getBody().get("id");
@@ -46,22 +50,24 @@ public class ControlHelper {
 
     public boolean checkIfUGVIsValid(String ugvId) throws Exception {
 
-        String resp_str = restTemplate.getForObject(CONTROL_SERVER_ADDRESS+"/ugv", String.class);
+        String resp_str = restTemplate.getForObject(CONTROL_SERVER_ADDRESS + "/ugv", String.class);
 
         JsonObject resp = new JsonParser().parse(resp_str).getAsJsonArray().get(0).getAsJsonObject();
 
         // System.out.println(resp.toString());
 
         // check to see if recieved response is empty or invalid
-        if(resp.isJsonNull() || !resp.has("id")) return false;
+        if (resp.isJsonNull() || !resp.has("id"))
+            return false;
 
         // System.out.println("Json not null and has ID");
 
         // check to see if UGV is online
-        // if(!resp.get("status").getAsString().equals("ONLINE")) return false;
+        if (!heartbeatHelper.isUGVOnline(ugvId))
+            return false;
 
         return true;
-    }   
+    }
 
     public boolean checkIfUGVIsParkable(String ugvId) {
 
@@ -77,7 +83,7 @@ public class ControlHelper {
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public List<Map> getAllUGVs() {
-        ResponseEntity<List> resp = restTemplate.getForEntity(CONTROL_SERVER_ADDRESS+"/ugv", List.class);
+        ResponseEntity<List> resp = restTemplate.getForEntity(CONTROL_SERVER_ADDRESS + "/ugv", List.class);
         return resp.getBody();
     }
 }

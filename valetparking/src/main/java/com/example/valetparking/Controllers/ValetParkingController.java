@@ -63,7 +63,7 @@ public class ValetParkingController {
         return ResponseEntity.ok().body("Request queued");
 
     }
-    
+
     @PostMapping("/retrieve")
     public ResponseEntity<Object> retrieve(@RequestBody Map<String, Object> payload) {
         String ugvId = (String) payload.get("ugvID");
@@ -106,7 +106,7 @@ public class ValetParkingController {
     public ResponseEntity<Object> getAllUGVs() {
         return ResponseEntity.ok().body(controlHelper.getAllUGVs());
     }
-    
+
     @PostMapping("/action-complete")
     public ResponseEntity<Object> handleActionComplete(@RequestBody Map<String, Object> payload) {
 

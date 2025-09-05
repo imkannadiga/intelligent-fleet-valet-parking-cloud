@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
-
 @RestController
 @RequestMapping("/api/ugv")
 public class UGVHeartbeatController {
@@ -18,8 +17,9 @@ public class UGVHeartbeatController {
     @Autowired
     private UGVService ugvService;
 
-    @PutMapping("/{id}/regusterHeartbeat") 
-    public ResponseEntity<?> registerHeartbeat(@PathVariable String id, @RequestBody Map<String, String> heartbeatData) {
+    @PutMapping("/{id}/regusterHeartbeat")
+    public ResponseEntity<?> registerHeartbeat(@PathVariable String id,
+            @RequestBody Map<String, String> heartbeatData) {
         try {
             UGV ugv = ugvService.getUGVById(id);
             ugv.setStatus(UGVStatus.ONLINE);
@@ -31,4 +31,17 @@ public class UGVHeartbeatController {
             return ResponseEntity.status(404).body("UGV not found");
         }
     }
-}
+
+    @GetMapping("/heartbeat/{id}")
+    public ResponseEntity<Map<String, Object>> getHeartbeat(@PathVariable String id) {
+        try {
+            UGV ugv = ugvService.getUGVById(id);
+            if(ugv.getStatus() == UGVStatus.ONLINE) {
+                return ResponseEntity.ok(Map.of("lastHeartbeat", ugv.getLastHeartbeat()));
+            } else {
+                return ResponseEntity.status(404).body(Map.of("error", "UGV is offline"));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body(Map.of("error", "UGV not found"));
+        }
+    }
