@@ -1,4 +1,4 @@
-package com.example.auth.Entities;
+package com.example.auth.Entities.users;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,6 +12,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,6 +38,7 @@ public class User implements UserDetails {
     private UserRole role;
 
     @DBRef
+    @JsonIgnore
     private UGV ugv;
 
     public User(String name, String email, String password, UserRole role, UGV ugv) {

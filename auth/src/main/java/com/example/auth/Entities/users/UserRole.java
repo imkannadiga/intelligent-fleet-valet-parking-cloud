@@ -1,4 +1,4 @@
-package com.example.auth.Entities;
+package com.example.auth.Entities.users;
 
 public enum UserRole {
     ADMIN("admin"),

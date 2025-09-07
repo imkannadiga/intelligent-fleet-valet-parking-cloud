@@ -248,6 +248,69 @@ spec:
   selector:
     app: heartbeat
 ---
+# === BEGIN AUTH SERVICE ===
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-service
+  namespace: auth-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth-service
+  template:
+    metadata:
+      labels:
+        app: auth-service
+    spec:
+      initContainers:
+        - name: download-otel-agent
+          image: curlimages/curl:latest
+          command: ["/bin/sh", "-c"]
+          args:
+            - curl -sSL https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v2.16.0/opentelemetry-javaagent.jar -o /otel/opentelemetry-javaagent.jar
+          volumeMounts:
+            - name: otel-agent
+              mountPath: /otel
+      containers:
+        - name: auth-service
+          image: imkannadiga/auth-service:latest
+          ports:
+            - containerPort: 9000
+          env:
+            - name: JAVA_TOOL_OPTIONS
+              value: >
+                -javaagent:/otel/opentelemetry-javaagent.jar
+                -Dotel.exporter.otlp.protocol=grpc
+                -Dotel.exporter.otlp.endpoint=http://otel-collector-agent.monitoring.svc.cluster.local:4317
+                -Dotel.resource.attributes=service.name=auth-service,service.namespace=valetparking
+            - name: OTEL_METRICS_EXPORTER
+              value: "none"
+            - name: OTEL_LOGS_EXPORTER
+              value: "none"
+          volumeMounts:
+            - name: otel-agent
+              mountPath: /otel
+              readOnly: true
+      volumes:
+        - name: otel-agent
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-service
+  namespace: valetparking
+spec:
+  type: NodePort
+  ports:
+    - port: 9000
+      targetPort: 9000
+      nodePort: 30900
+  selector:
+    app: auth.service
+---
 # === BEGIN UI SERVICE ===
 apiVersion: apps/v1
 kind: Deployment

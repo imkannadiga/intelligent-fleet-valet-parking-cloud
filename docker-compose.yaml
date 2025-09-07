@@ -50,6 +50,20 @@ services:
     networks:
       - app_network
 
+  auth-service:
+    build: ./auth
+    container_name: auth-service
+    image: imkannadiga/auth-service:latest
+    restart: always
+    depends_on:
+      - mongo-database
+    environment:
+      - MONGO_URI=mongodb://mongo-database:27017/
+    ports:
+      - "10005:10005"
+    networks:
+      - app_network
+
   ui-service:
     build: ./ui-service
     container_name: ui-service

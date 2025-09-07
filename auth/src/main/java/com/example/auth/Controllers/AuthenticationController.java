@@ -11,6 +11,8 @@ import com.example.auth.Repositories.UserRepository;
 
 import com.example.auth.Helpers.ControlHelper;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -28,10 +30,13 @@ public class AuthenticationController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
     @Autowired
     private UserRepository userRepository;
+
     @Autowired
     private TokenService tokenService;
+
     @Autowired
     private ControlHelper controlHelper;
 
@@ -67,6 +72,7 @@ public class AuthenticationController {
         try {
             controlHelper.createUGV(ugv);
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(500).body("Error creating UGV");
         }
 
@@ -76,5 +82,37 @@ public class AuthenticationController {
         this.userRepository.save(user);
 
         return ResponseEntity.ok().build();
+    }
+
+
+    /**
+     * Validates a token and retrieves associated UGV details.
+     *
+     * @param payload Map containing the token to be validated
+     * @return ResponseEntity containing UGV details or error message
+     */
+    @PostMapping(value = "/validate", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> validateToken(@RequestBody Map<String, String> payload) {
+        String token = payload.get("token");
+        if (token == null || token.isEmpty()) {
+            return ResponseEntity.badRequest().body("Token is required");
+        }
+
+        String email = tokenService.validateToken(token);
+        if (email == null || email.isEmpty()) {
+            return ResponseEntity.status(401).body("Invalid or expired token");
+        }
+
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            return ResponseEntity.status(404).body("User not found");
+        }
+
+        UGV ugv = user.getUgv();
+        if (ugv == null) {
+            return ResponseEntity.status(404).body("UGV not found for user");
+        }
+
+        return ResponseEntity.ok(ugv);
     }
 }
