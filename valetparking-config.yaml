@@ -96,9 +96,11 @@ spec:
                 -Dotel.exporter.otlp.endpoint=http://otel-collector-agent.monitoring.svc.cluster.local:4317
                 -Dotel.resource.attributes=service.name=controlserver,service.namespace=valetparking
             - name: OTEL_METRICS_EXPORTER
-              value: "none"
+              value: "otlp"
+            - name: OTEL_TRACES_EXPORTER
+              value: "otlp"
             - name: OTEL_LOGS_EXPORTER
-              value: "none"
+              value: "otlp"
           volumeMounts:
             - name: otel-agent
               mountPath: /otel
@@ -160,9 +162,11 @@ spec:
                 -Dotel.exporter.otlp.endpoint=http://otel-collector-agent.monitoring.svc.cluster.local:4317
                 -Dotel.resource.attributes=service.name=mapserver,service.namespace=valetparking
             - name: OTEL_METRICS_EXPORTER
-              value: "none"
+              value: "otlp"
+            - name: OTEL_TRACES_EXPORTER
+              value: "otlp"
             - name: OTEL_LOGS_EXPORTER
-              value: "none"
+              value: "otlp"
           volumeMounts:
             - name: otel-agent
               mountPath: /otel
@@ -224,9 +228,11 @@ spec:
                 -Dotel.exporter.otlp.endpoint=http://otel-collector-agent.monitoring.svc.cluster.local:4317
                 -Dotel.resource.attributes=service.name=heartbeat-service,service.namespace=valetparking
             - name: OTEL_METRICS_EXPORTER
-              value: "none"
+              value: "otlp"
+            - name: OTEL_TRACES_EXPORTER
+              value: "otlp"
             - name: OTEL_LOGS_EXPORTER
-              value: "none"
+              value: "otlp"
           volumeMounts:
             - name: otel-agent
               mountPath: /otel
@@ -286,9 +292,11 @@ spec:
                 -Dotel.exporter.otlp.endpoint=http://otel-collector-agent.monitoring.svc.cluster.local:4317
                 -Dotel.resource.attributes=service.name=ui-service,service.namespace=valetparking
             - name: OTEL_METRICS_EXPORTER
-              value: "none"
+              value: "otlp"
+            - name: OTEL_TRACES_EXPORTER
+              value: "otlp"
             - name: OTEL_LOGS_EXPORTER
-              value: "none"
+              value: "otlp"
           volumeMounts:
             - name: otel-agent
               mountPath: /otel
@@ -349,9 +357,11 @@ spec:
                 -Dotel.exporter.otlp.endpoint=http://otel-collector-agent.monitoring.svc.cluster.local:4317
                 -Dotel.resource.attributes=service.name=parking-spot-manager,service.namespace=valetparking
             - name: OTEL_METRICS_EXPORTER
-              value: "none"
+              value: "otlp"
+            - name: OTEL_TRACES_EXPORTER
+              value: "otlp"
             - name: OTEL_LOGS_EXPORTER
-              value: "none"
+              value: "otlp"
           volumeMounts:
             - name: otel-agent
               mountPath: /otel
@@ -412,9 +422,11 @@ spec:
                 -Dotel.exporter.otlp.endpoint=http://otel-collector-agent.monitoring.svc.cluster.local:4317
                 -Dotel.resource.attributes=service.name=valetparking,service.namespace=valetparking
             - name: OTEL_METRICS_EXPORTER
-              value: "none"
+              value: "otlp"
+            - name: OTEL_TRACES_EXPORTER
+              value: "otlp"
             - name: OTEL_LOGS_EXPORTER
-              value: "none"
+              value: "otlp"
           volumeMounts:
             - name: otel-agent
               mountPath: /otel
