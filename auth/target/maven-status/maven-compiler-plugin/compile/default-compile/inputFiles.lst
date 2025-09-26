@@ -1,0 +1,15 @@
+/home/softdcar/Desktop/applications/intelligent-fleet-valet-parking-cloud/auth/src/main/java/com/example/auth/AuthApplication.java
+/home/softdcar/Desktop/applications/intelligent-fleet-valet-parking-cloud/auth/src/main/java/com/example/auth/Controllers/AuthenticationController.java
+/home/softdcar/Desktop/applications/intelligent-fleet-valet-parking-cloud/auth/src/main/java/com/example/auth/Entities/users/UGV.java
+/home/softdcar/Desktop/applications/intelligent-fleet-valet-parking-cloud/auth/src/main/java/com/example/auth/Entities/users/UGVStatus.java
+/home/softdcar/Desktop/applications/intelligent-fleet-valet-parking-cloud/auth/src/main/java/com/example/auth/Entities/users/User.java
+/home/softdcar/Desktop/applications/intelligent-fleet-valet-parking-cloud/auth/src/main/java/com/example/auth/Entities/users/UserRole.java
+/home/softdcar/Desktop/applications/intelligent-fleet-valet-parking-cloud/auth/src/main/java/com/example/auth/Entities/users/dtos/AuthenticationDTO.java
+/home/softdcar/Desktop/applications/intelligent-fleet-valet-parking-cloud/auth/src/main/java/com/example/auth/Entities/users/dtos/LoginResponseDTO.java
+/home/softdcar/Desktop/applications/intelligent-fleet-valet-parking-cloud/auth/src/main/java/com/example/auth/Entities/users/dtos/RegisterDTO.java
+/home/softdcar/Desktop/applications/intelligent-fleet-valet-parking-cloud/auth/src/main/java/com/example/auth/Helpers/ControlHelper.java
+/home/softdcar/Desktop/applications/intelligent-fleet-valet-parking-cloud/auth/src/main/java/com/example/auth/Infra/Security/SecurityConfigurations.java
+/home/softdcar/Desktop/applications/intelligent-fleet-valet-parking-cloud/auth/src/main/java/com/example/auth/Infra/Security/SecurityFilter.java
+/home/softdcar/Desktop/applications/intelligent-fleet-valet-parking-cloud/auth/src/main/java/com/example/auth/Infra/Security/TokenService.java
+/home/softdcar/Desktop/applications/intelligent-fleet-valet-parking-cloud/auth/src/main/java/com/example/auth/Repositories/UserRepository.java
+/home/softdcar/Desktop/applications/intelligent-fleet-valet-parking-cloud/auth/src/main/java/com/example/auth/Services/AuthenticationService.java

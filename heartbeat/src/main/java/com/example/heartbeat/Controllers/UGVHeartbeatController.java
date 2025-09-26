@@ -45,3 +45,4 @@ public class UGVHeartbeatController {
             return ResponseEntity.status(404).body(Map.of("error", "UGV not found"));
         }
     }
+}
