@@ -85,7 +85,7 @@ public class ValetParkingController {
         return ResponseEntity.ok().body(response);
 
     }
-    
+
     @PostMapping("/retrieve")
     public ResponseEntity<Object> retrieve(@RequestBody Map<String, Object> payload) {
         String token = (String) payload.get("token");
@@ -158,7 +158,7 @@ public class ValetParkingController {
     public ResponseEntity<Object> getAllUGVs() {
         return ResponseEntity.ok().body(controlHelper.getAllUGVs());
     }
-    
+
     @PostMapping("/action-complete")
     public ResponseEntity<Object> handleActionComplete(@RequestBody Map<String, Object> payload) {
 
