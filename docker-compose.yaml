@@ -72,8 +72,6 @@ services:
     depends_on:
       - controlserver
       - mapserver
-    ports:
-      - "3000:80"
     networks:
       - app_network
 
