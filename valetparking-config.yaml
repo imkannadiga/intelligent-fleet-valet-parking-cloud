@@ -294,9 +294,11 @@ spec:
                 -Dotel.exporter.otlp.endpoint=http://otel-collector-agent.monitoring.svc.cluster.local:4317
                 -Dotel.resource.attributes=service.name=auth-service,service.namespace=valetparking
             - name: OTEL_METRICS_EXPORTER
-              value: "none"
+              value: "otlp"
+            - name: OTEL_TRACES_EXPORTER
+              value: "otlp"
             - name: OTEL_LOGS_EXPORTER
-              value: "none"
+              value: "otlp"
           volumeMounts:
             - name: otel-agent
               mountPath: /otel

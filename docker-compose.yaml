@@ -57,8 +57,6 @@ services:
     restart: always
     depends_on:
       - mongo-database
-    environment:
-      - MONGO_URI=mongodb://mongo-database:27017/
     ports:
       - "10005:10005"
     networks:
