@@ -1,25 +1,22 @@
-# Use Node.js as base image
-FROM node:22-alpine AS build
+# syntax=docker/dockerfile:1
+FROM python:3.11-slim
 
-# Set working directory
 WORKDIR /app
 
-# Copy package.json and install dependencies
-COPY package.json package-lock.json ./
-RUN npm install
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of the application
 COPY . .
 
-# Build the React app
-RUN npm run build
+# Environment config for OTel
+ENV PYTHONUNBUFFERED=1
+ENV OTEL_SERVICE_NAME="ui-service"
+ENV OTEL_EXPORTER_OTLP_ENDPOINT="http://otel-collector-agent.monitoring.svc.cluster.local:4317"
+ENV OTEL_EXPORTER_OTLP_PROTOCOL="grpc"
+ENV OTEL_TRACES_EXPORTER="otlp"
+ENV OTEL_METRICS_EXPORTER="otlp"
+ENV OTEL_LOGS_EXPORTER="otlp"
+ENV OTEL_RESOURCE_ATTRIBUTES="service.namespace=valetparking"
 
-# Use Nginx to serve the built React app
-FROM nginx:alpine
-COPY --from=build /app/build /usr/share/nginx/html
-
-# Expose port 80
-EXPOSE 80
-
-# Start Nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Run with OTel auto-instrumentation
+CMD ["opentelemetry-instrument", "python", "valet_tester.py"]

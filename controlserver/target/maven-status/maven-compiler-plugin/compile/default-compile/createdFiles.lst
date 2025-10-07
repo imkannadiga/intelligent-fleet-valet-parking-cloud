@@ -1,8 +1,15 @@
 com/example/controlserver/Repositories/UGVRepository.class
-com/example/controlserver/Controllers/WebSocketConfig.class
 com/example/controlserver/Models/Coordinate.class
-com/example/controlserver/Services/SocketConnectionHandler.class
 com/example/controlserver/ControlserverApplication.class
+com/example/controlserver/Repositories/NavigationRequestRepository.class
+com/example/controlserver/Schedulers/NavigationCallbackScheduler.class
+com/example/controlserver/Models/NavigationRequest.class
+com/example/controlserver/Services/NavigationRequestService.class
+com/example/controlserver/Config/WebConfig.class
 com/example/controlserver/Controllers/UGVController.class
 com/example/controlserver/Services/UGVService.class
+com/example/controlserver/Controllers/NavigationRequestController.class
+com/example/controlserver/Misc/JobStatus.class
+com/example/controlserver/DTOs/CreateNavigationRequestDTO.class
+com/example/controlserver/Misc/UGVStatus.class
 com/example/controlserver/Models/UGV.class

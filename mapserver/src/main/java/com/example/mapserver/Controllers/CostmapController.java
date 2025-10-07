@@ -31,14 +31,18 @@ public class CostmapController {
             List<Integer> mapDataList = (List<Integer>) ((Map<String, Object>) mapData.get("map")).get("data");
 
             // Extract global costmap info and origin
-            Map<String, Object> globalInfo = (Map<String, Object>) ((Map<String, Object>) mapData.get("global_costmap")).get("info");
+            Map<String, Object> globalInfo = (Map<String, Object>) ((Map<String, Object>) mapData.get("global_costmap"))
+                    .get("info");
             Map<String, Object> globalOrigin = (Map<String, Object>) globalInfo.get("origin");
-            List<Integer> globalDataList = (List<Integer>) ((Map<String, Object>) mapData.get("global_costmap")).get("data");
+            List<Integer> globalDataList = (List<Integer>) ((Map<String, Object>) mapData.get("global_costmap"))
+                    .get("data");
 
             // Extract local costmap info and origin
-            Map<String, Object> localInfo = (Map<String, Object>) ((Map<String, Object>) mapData.get("local_costmap")).get("info");
+            Map<String, Object> localInfo = (Map<String, Object>) ((Map<String, Object>) mapData.get("local_costmap"))
+                    .get("info");
             Map<String, Object> localOrigin = (Map<String, Object>) localInfo.get("origin");
-            List<Integer> localDataList = (List<Integer>) ((Map<String, Object>) mapData.get("local_costmap")).get("data");
+            List<Integer> localDataList = (List<Integer>) ((Map<String, Object>) mapData.get("local_costmap"))
+                    .get("data");
 
             // Extract transform data
             Map<String, Object> transform = (Map<String, Object>) mapData.get("transform");
@@ -52,36 +56,39 @@ public class CostmapController {
             // System.out.println("MapOriginX ::: "+mapOriginX);
             // System.out.println("MapOriginY ::: "+mapOriginY);
             // System.out.println("MapOriginZ ::: "+mapOriginZ);
-            
+
             double globalMapOriginX = (double) globalOrigin.get("x");
             double globalMapOriginY = (double) globalOrigin.get("y");
             double globalMapOriginZ = (double) globalOrigin.get("z");
-            
+
             double localMapOriginX = (double) localOrigin.get("x");
             double localMapOriginY = (double) localOrigin.get("y");
             double localMapOriginZ = (double) localOrigin.get("z");
-            
 
             // Create a new MapRecord with origin data
             MapRecord newRecord = new MapRecord(
-                timestamp,
-                (int) mapInfo.get("width"), (int) mapInfo.get("height"), (double) mapInfo.get("resolution"), mapDataList,
-                mapOriginX, mapOriginY, mapOriginZ,
-                (int) globalInfo.get("width"), (int) globalInfo.get("height"), (double) globalInfo.get("resolution"), globalDataList,
-                globalMapOriginX, globalMapOriginY, globalMapOriginZ,
-                (int) localInfo.get("width"), (int) localInfo.get("height"), (double) localInfo.get("resolution"), localDataList,
-                localMapOriginX, localMapOriginY, localMapOriginZ,
-                (double) translation.get("x"), (double) translation.get("y"), (double) translation.get("z"),
-                (double) rotation.get("x"), (double) rotation.get("y"), (double) rotation.get("z"), (double) rotation.get("w")
-            );
+                    timestamp,
+                    (int) mapInfo.get("width"), (int) mapInfo.get("height"), (double) mapInfo.get("resolution"),
+                    mapDataList,
+                    mapOriginX, mapOriginY, mapOriginZ,
+                    (int) globalInfo.get("width"), (int) globalInfo.get("height"),
+                    (double) globalInfo.get("resolution"), globalDataList,
+                    globalMapOriginX, globalMapOriginY, globalMapOriginZ,
+                    (int) localInfo.get("width"), (int) localInfo.get("height"), (double) localInfo.get("resolution"),
+                    localDataList,
+                    localMapOriginX, localMapOriginY, localMapOriginZ,
+                    (double) translation.get("x"), (double) translation.get("y"), (double) translation.get("z"),
+                    (double) rotation.get("x"), (double) rotation.get("y"), (double) rotation.get("z"),
+                    (double) rotation.get("w"));
 
             // Save the new record and clean up old records
             mapRecordRepository.save(newRecord);
             cleanOldRecords();
 
             // System.out.println("Map uploaded successfully");
-            
-            return ResponseEntity.ok(Map.of("message", "Maps and transform uploaded successfully", "timestamp", timestamp));
+
+            return ResponseEntity
+                    .ok(Map.of("message", "Maps and transform uploaded successfully", "timestamp", timestamp));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(500).body(Map.of("error", "Failed to save maps and transform"));
@@ -92,27 +99,24 @@ public class CostmapController {
     public ResponseEntity<?> downloadMap() {
         List<MapRecord> records = mapRecordRepository.findAllByOrderByTimestampAsc();
         if (records.isEmpty()) {
-            return ResponseEntity.ok(Map.of("message", "No map available"));
+            return ResponseEntity.ok(Map.of("available", false));
         }
 
         MapRecord latestRecord = records.get(records.size() - 1);
 
         // Build the response including origin data
         Map<String, Object> response = Map.of(
-            "map", Map.of(
-                "info", latestRecord.getMapInfo(),
-                "data", latestRecord.getMapData()
-            ),
-            "global_costmap", Map.of(
-                "info", latestRecord.getGlobalCostmapInfo(),
-                "data", latestRecord.getGlobalCostmapData()
-            ),
-            "local_costmap", Map.of(
-                "info", latestRecord.getLocalCostmapInfo(),
-                "data", latestRecord.getLocalCostmapData()
-            ),
-            "transform", latestRecord.getTransformData()
-        );
+                "available", true,
+                "map", Map.of(
+                        "info", latestRecord.getMapInfo(),
+                        "data", latestRecord.getMapData()),
+                "global_costmap", Map.of(
+                        "info", latestRecord.getGlobalCostmapInfo(),
+                        "data", latestRecord.getGlobalCostmapData()),
+                "local_costmap", Map.of(
+                        "info", latestRecord.getLocalCostmapInfo(),
+                        "data", latestRecord.getLocalCostmapData()),
+                "transform", latestRecord.getTransformData());
 
         return ResponseEntity.ok(response);
     }

@@ -26,6 +26,10 @@ public class Requests {
 
     private boolean finished;
 
+    public String getId() {
+        return id;
+    }
+
     public String getUgvId() {
         return ugvId;
     }
