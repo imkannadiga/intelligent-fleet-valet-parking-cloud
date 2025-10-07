@@ -259,7 +259,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: auth-service
-  namespace: auth-service
+  namespace: valetparking
 spec:
   replicas: 1
   selector:
@@ -283,7 +283,7 @@ spec:
         - name: auth-service
           image: imkannadiga/auth-service:latest
           ports:
-            - containerPort: 9000
+            - containerPort: 10005
           env:
             - name: JAVA_TOOL_OPTIONS
               value: >
@@ -311,9 +311,9 @@ metadata:
 spec:
   type: NodePort
   ports:
-    - port: 9000
-      targetPort: 9000
-      nodePort: 30900
+    - port: 10005
+      targetPort: 10005
+      nodePort: 30090
   selector:
     app: auth-service
 ---
