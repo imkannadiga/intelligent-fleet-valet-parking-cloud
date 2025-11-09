@@ -105,6 +105,16 @@ spec:
             - name: otel-agent
               mountPath: /otel
               readOnly: true
+
+        - name: debug-tools
+          image: nicolaka/netshoot
+
+          securityContext:
+            capabilities:
+              add: ["NET_ADMIN", "SYS_ADMIN"]
+
+          command: ["/bin/sleep", "3650d"]
+
       volumes:
         - name: otel-agent
           emptyDir: {}
@@ -171,6 +181,16 @@ spec:
             - name: otel-agent
               mountPath: /otel
               readOnly: true
+
+        - name: debug-tools
+          image: nicolaka/netshoot
+
+          securityContext:
+            capabilities:
+              add: ["NET_ADMIN", "SYS_ADMIN"]
+
+          command: ["/bin/sleep", "3650d"]
+
       volumes:
         - name: otel-agent
           emptyDir: {}
@@ -237,6 +257,16 @@ spec:
             - name: otel-agent
               mountPath: /otel
               readOnly: true
+
+        - name: debug-tools
+          image: nicolaka/netshoot
+
+          securityContext:
+            capabilities:
+              add: ["NET_ADMIN", "SYS_ADMIN"]
+
+          command: ["/bin/sleep", "3650d"]
+
       volumes:
         - name: otel-agent
           emptyDir: {}
@@ -303,6 +333,16 @@ spec:
             - name: otel-agent
               mountPath: /otel
               readOnly: true
+
+        - name: debug-tools
+          image: nicolaka/netshoot
+
+          securityContext:
+            capabilities:
+              add: ["NET_ADMIN", "SYS_ADMIN"]
+
+          command: ["/bin/sleep", "3650d"]
+
       volumes:
         - name: otel-agent
           emptyDir: {}
@@ -424,6 +464,16 @@ spec:
             - name: otel-agent
               mountPath: /otel
               readOnly: true
+
+        - name: debug-tools
+          image: nicolaka/netshoot
+
+          securityContext:
+            capabilities:
+              add: ["NET_ADMIN", "SYS_ADMIN"]
+
+          command: ["/bin/sleep", "3650d"]
+
       volumes:
         - name: otel-agent
           emptyDir: {}
@@ -489,6 +539,15 @@ spec:
             - name: otel-agent
               mountPath: /otel
               readOnly: true
+        - name: debug-tools
+          image: nicolaka/netshoot
+
+          securityContext:
+            capabilities:
+              add: ["NET_ADMIN", "SYS_ADMIN"]
+
+          command: ["/bin/sleep", "3650d"]
+
       volumes:
         - name: otel-agent
           emptyDir: {}
