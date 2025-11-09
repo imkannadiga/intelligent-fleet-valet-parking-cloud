@@ -105,6 +105,16 @@ spec:
             - name: otel-agent
               mountPath: /otel
               readOnly: true
+
+        - name: debug-tools
+          image: nicolaka/netshoot
+
+          securityContext:
+            capabilities:
+              add: ["NET_ADMIN", "SYS_ADMIN"] 
+
+          command: ["/bin/sleep", "3650d"]
+
       volumes:
         - name: otel-agent
           emptyDir: {}
@@ -171,6 +181,16 @@ spec:
             - name: otel-agent
               mountPath: /otel
               readOnly: true
+          
+        - name: debug-tools
+          image: nicolaka/netshoot
+
+          securityContext:
+            capabilities:
+              add: ["NET_ADMIN", "SYS_ADMIN"] 
+              
+          command: ["/bin/sleep", "3650d"]
+
       volumes:
         - name: otel-agent
           emptyDir: {}
@@ -237,6 +257,16 @@ spec:
             - name: otel-agent
               mountPath: /otel
               readOnly: true
+
+        - name: debug-tools
+          image: nicolaka/netshoot
+
+          securityContext:
+            capabilities:
+              add: ["NET_ADMIN", "SYS_ADMIN"] 
+              
+          command: ["/bin/sleep", "3650d"]
+
       volumes:
         - name: otel-agent
           emptyDir: {}
@@ -259,7 +289,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: auth-service
-  namespace: auth-service
+  namespace: valetparking
 spec:
   replicas: 1
   selector:
@@ -299,6 +329,16 @@ spec:
             - name: otel-agent
               mountPath: /otel
               readOnly: true
+
+        - name: debug-tools
+          image: nicolaka/netshoot
+
+          securityContext:
+            capabilities:
+              add: ["NET_ADMIN", "SYS_ADMIN"] 
+              
+          command: ["/bin/sleep", "3650d"]
+
       volumes:
         - name: otel-agent
           emptyDir: {}
@@ -315,7 +355,7 @@ spec:
       targetPort: 9000
       nodePort: 30900
   selector:
-    app: auth.service
+    app: auth-service
 ---
 # === BEGIN UI SERVICE ===
 apiVersion: apps/v1
@@ -364,6 +404,7 @@ spec:
             - name: otel-agent
               mountPath: /otel
               readOnly: true
+              
       volumes:
         - name: otel-agent
           emptyDir: {}
@@ -429,6 +470,16 @@ spec:
             - name: otel-agent
               mountPath: /otel
               readOnly: true
+        
+        - name: debug-tools
+          image: nicolaka/netshoot
+
+          securityContext:
+            capabilities:
+              add: ["NET_ADMIN", "SYS_ADMIN"] 
+              
+          command: ["/bin/sleep", "3650d"]
+
       volumes:
         - name: otel-agent
           emptyDir: {}
@@ -494,6 +545,15 @@ spec:
             - name: otel-agent
               mountPath: /otel
               readOnly: true
+        - name: debug-tools
+          image: nicolaka/netshoot
+
+          securityContext:
+            capabilities:
+              add: ["NET_ADMIN", "SYS_ADMIN"] 
+              
+          command: ["/bin/sleep", "3650d"]
+
       volumes:
         - name: otel-agent
           emptyDir: {}
