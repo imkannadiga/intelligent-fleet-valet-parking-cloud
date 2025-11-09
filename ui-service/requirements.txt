@@ -1,0 +1,6 @@
+requests
+python-dotenv
+
+opentelemetry-distro
+opentelemetry-exporter-otlp
+opentelemetry-instrumentation-requests

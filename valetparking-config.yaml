@@ -111,7 +111,7 @@ spec:
 
           securityContext:
             capabilities:
-              add: ["NET_ADMIN", "SYS_ADMIN"] 
+              add: ["NET_ADMIN", "SYS_ADMIN"]
 
           command: ["/bin/sleep", "3650d"]
 
@@ -181,14 +181,14 @@ spec:
             - name: otel-agent
               mountPath: /otel
               readOnly: true
-          
+
         - name: debug-tools
           image: nicolaka/netshoot
 
           securityContext:
             capabilities:
-              add: ["NET_ADMIN", "SYS_ADMIN"] 
-              
+              add: ["NET_ADMIN", "SYS_ADMIN"]
+
           command: ["/bin/sleep", "3650d"]
 
       volumes:
@@ -263,8 +263,8 @@ spec:
 
           securityContext:
             capabilities:
-              add: ["NET_ADMIN", "SYS_ADMIN"] 
-              
+              add: ["NET_ADMIN", "SYS_ADMIN"]
+
           command: ["/bin/sleep", "3650d"]
 
       volumes:
@@ -335,8 +335,8 @@ spec:
 
           securityContext:
             capabilities:
-              add: ["NET_ADMIN", "SYS_ADMIN"] 
-              
+              add: ["NET_ADMIN", "SYS_ADMIN"]
+
           command: ["/bin/sleep", "3650d"]
 
       volumes:
@@ -357,7 +357,7 @@ spec:
   selector:
     app: auth-service
 ---
-# === BEGIN UI SERVICE ===
+# === BEGIN UI SERVICE (Python Valet Tester) ===
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -373,55 +373,45 @@ spec:
       labels:
         app: ui-service
     spec:
-      initContainers:
-        - name: download-otel-agent
-          image: curlimages/curl:latest
-          command: ["/bin/sh", "-c"]
-          args:
-            - curl -sSL https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v2.16.0/opentelemetry-javaagent.jar -o /otel/opentelemetry-javaagent.jar
-          volumeMounts:
-            - name: otel-agent
-              mountPath: /otel
       containers:
         - name: ui-service
           image: imkannadiga/ui-service:latest
-          ports:
-            - containerPort: 80
           env:
-            - name: JAVA_TOOL_OPTIONS
-              value: >
-                -javaagent:/otel/opentelemetry-javaagent.jar
-                -Dotel.exporter.otlp.protocol=grpc
-                -Dotel.exporter.otlp.endpoint=http://otel-collector-agent.monitoring.svc.cluster.local:4317
-                -Dotel.resource.attributes=service.name=ui-service,service.namespace=valetparking
-            - name: OTEL_METRICS_EXPORTER
-              value: "otlp"
+            - name: OTEL_SERVICE_NAME
+              value: "ui-service"
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: "http://otel-collector-agent.monitoring.svc.cluster.local:4317"
+            - name: OTEL_EXPORTER_OTLP_PROTOCOL
+              value: "grpc"
+            - name: OTEL_RESOURCE_ATTRIBUTES
+              value: "service.namespace=valetparking,service.version=1.0.0"
             - name: OTEL_TRACES_EXPORTER
+              value: "otlp"
+            - name: OTEL_METRICS_EXPORTER
               value: "otlp"
             - name: OTEL_LOGS_EXPORTER
               value: "otlp"
-          volumeMounts:
-            - name: otel-agent
-              mountPath: /otel
-              readOnly: true
-              
-      volumes:
-        - name: otel-agent
-          emptyDir: {}
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "256Mi"
+            limits:
+              cpu: "4"
+              memory: "512Mi"
 ---
-apiVersion: v1
-kind: Service
-metadata:
-  name: ui-service
-  namespace: valetparking
-spec:
-  type: NodePort
-  ports:
-    - port: 80
-      targetPort: 80
-      nodePort: 30080
-  selector:
-    app: ui-service
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: ui-service
+#   namespace: valetparking
+# spec:
+#   type: NodePort
+#   ports:
+#     - port: 80
+#       targetPort: 80
+#       nodePort: 30080
+#   selector:
+#     app: ui-service
 ---
 # === BEGIN PARKING SPOT MANAGER ===
 apiVersion: apps/v1
@@ -470,14 +460,14 @@ spec:
             - name: otel-agent
               mountPath: /otel
               readOnly: true
-        
+
         - name: debug-tools
           image: nicolaka/netshoot
 
           securityContext:
             capabilities:
-              add: ["NET_ADMIN", "SYS_ADMIN"] 
-              
+              add: ["NET_ADMIN", "SYS_ADMIN"]
+
           command: ["/bin/sleep", "3650d"]
 
       volumes:
@@ -550,8 +540,8 @@ spec:
 
           securityContext:
             capabilities:
-              add: ["NET_ADMIN", "SYS_ADMIN"] 
-              
+              add: ["NET_ADMIN", "SYS_ADMIN"]
+
           command: ["/bin/sleep", "3650d"]
 
       volumes:
