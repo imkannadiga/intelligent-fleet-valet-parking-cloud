@@ -107,7 +107,7 @@ spec:
               readOnly: true
 
         - name: debug-tools
-          image: nicolaka/netshoot
+          image: polinux/stress-ng
 
           securityContext:
             capabilities:
@@ -183,7 +183,7 @@ spec:
               readOnly: true
 
         - name: debug-tools
-          image: nicolaka/netshoot
+          image: polinux/stress-ng
 
           securityContext:
             capabilities:
@@ -259,7 +259,7 @@ spec:
               readOnly: true
 
         - name: debug-tools
-          image: nicolaka/netshoot
+          image: polinux/stress-ng
 
           securityContext:
             capabilities:
@@ -335,7 +335,7 @@ spec:
               readOnly: true
 
         - name: debug-tools
-          image: nicolaka/netshoot
+          image: polinux/stress-ng
 
           securityContext:
             capabilities:
@@ -466,7 +466,7 @@ spec:
               readOnly: true
 
         - name: debug-tools
-          image: nicolaka/netshoot
+          image: polinux/stress-ng
 
           securityContext:
             capabilities:
@@ -540,7 +540,7 @@ spec:
               mountPath: /otel
               readOnly: true
         - name: debug-tools
-          image: nicolaka/netshoot
+          image: polinux/stress-ng
 
           securityContext:
             capabilities:
