@@ -24,21 +24,43 @@ public class UGVHeartbeatScheduler {
 
     @Scheduled(fixedDelay = 10000)
     public void broadcastUGVHeartBeat() {
-        logger.info("Started UGV offline job");
+        logger.debug("Started UGV offline check scheduler");
 
-        List<UGV> ugvList = ugvService.getAllUGVs();
+        try {
+            List<UGV> ugvList = ugvService.getAllUGVs();
+            logger.debug("Checking heartbeat for {} UGV(s)", ugvList.size());
 
-        Map<String, Object> request = new HashMap<>();
-        request.put("request_type", "heartbeat");
-        for(UGV ugv : ugvList) {
-            try {
-                if(System.currentTimeMillis() - ugv.getLastHeartbeat() > 5000) { 
-                    ugv.setStatus(UGVStatus.OFFLINE);
-                    ugvService.updateUGV(ugv.getId(), ugv);
+            long currentTime = System.currentTimeMillis();
+            int offlineCount = 0;
+            
+            Map<String, Object> request = new HashMap<>();
+            request.put("request_type", "heartbeat");
+            
+            for(UGV ugv : ugvList) {
+                try {
+                    long timeSinceLastHeartbeat = currentTime - ugv.getLastHeartbeat();
+                    if(timeSinceLastHeartbeat > 5000) { 
+                        logger.info("UGV marked as offline - ID: {}, Time since last heartbeat: {}ms", 
+                                ugv.getId(), timeSinceLastHeartbeat);
+                        ugv.setStatus(UGVStatus.OFFLINE);
+                        ugvService.updateUGV(ugv.getId(), ugv);
+                        offlineCount++;
+                    } else {
+                        logger.trace("UGV is online - ID: {}, Time since last heartbeat: {}ms", 
+                                ugv.getId(), timeSinceLastHeartbeat);
+                    }
+                } catch (Exception e) {
+                    logger.error("Error updating UGV status - ID: {}", ugv.getId(), e);
                 }
-            } catch (Exception e) {
-                logger.error("Error updating UGV :: "+ugv.getId());
             }
+            
+            if (offlineCount > 0) {
+                logger.info("UGV offline check completed - {} UGV(s) marked as offline", offlineCount);
+            } else {
+                logger.debug("UGV offline check completed - All UGVs are online");
+            }
+        } catch (Exception e) {
+            logger.error("Error in UGV heartbeat scheduler", e);
         }
     }
 }

@@ -21,12 +21,21 @@ public class NavigationCallbackScheduler {
     
     @Scheduled(fixedDelay = 10000)
     public void completedNavigationCallbacks() {
-        logger.info("Started navigation callback scheduler");
-        // Get all completed navigation requests
-        List<NavigationRequest> completedRequests = navigationRequestService.getCompletedJobs();
+        logger.debug("Started navigation callback scheduler");
+        try {
+            // Get all completed navigation requests
+            List<NavigationRequest> completedRequests = navigationRequestService.getCompletedJobs();
+            logger.info("Found {} completed navigation request(s) to process", completedRequests.size());
 
-        for(NavigationRequest req : completedRequests) {
-            navigationRequestService.generateCallBack(req.getId(), req.getCallbackURL());
+            for(NavigationRequest req : completedRequests) {
+                logger.debug("Generating callback for navigation request - ID: {}, Callback URL: {}", 
+                        req.getId(), req.getCallbackURL());
+                navigationRequestService.generateCallBack(req.getId(), req.getCallbackURL());
+                logger.info("Callback generated successfully for navigation request - ID: {}", req.getId());
+            }
+        } catch (Exception e) {
+            logger.error("Error processing navigation callbacks", e);
         }
+        logger.debug("Completed navigation callback scheduler");
     }
 }

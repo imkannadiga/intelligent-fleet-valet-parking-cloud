@@ -2,6 +2,8 @@ package com.example.mapserver.Controllers;
 
 import com.example.mapserver.Models.MapRecord;
 import com.example.mapserver.Repositories.MapRecordRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,8 @@ import java.util.Map;
 @RequestMapping("/api/costmap")
 public class CostmapController {
 
+    private static final Logger logger = LoggerFactory.getLogger(CostmapController.class);
+
     @Autowired
     private MapRecordRepository mapRecordRepository;
 
@@ -21,8 +25,10 @@ public class CostmapController {
 
     @PostMapping("/upload_map")
     public ResponseEntity<?> uploadMap(@RequestBody Map<String, Object> mapData) {
+        logger.info("Map upload request received");
         try {
             long timestamp = System.currentTimeMillis();
+            logger.debug("Processing map upload - Timestamp: {}", timestamp);
 
             // Extract map info and origin
             Map<String, Object> mapInfo = (Map<String, Object>) ((Map<String, Object>) mapData.get("map")).get("info");
@@ -82,50 +88,71 @@ public class CostmapController {
                     (double) rotation.get("w"));
 
             // Save the new record and clean up old records
+            logger.debug("Saving map record to repository");
             mapRecordRepository.save(newRecord);
+            logger.info("Map record saved successfully - Timestamp: {}", timestamp);
+            
             cleanOldRecords();
 
-            // System.out.println("Map uploaded successfully");
-
+            logger.info("Map uploaded successfully - Timestamp: {}", timestamp);
             return ResponseEntity
                     .ok(Map.of("message", "Maps and transform uploaded successfully", "timestamp", timestamp));
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Error uploading map", e);
             return ResponseEntity.status(500).body(Map.of("error", "Failed to save maps and transform"));
         }
     }
 
     @GetMapping("/download_map")
     public ResponseEntity<?> downloadMap() {
-        List<MapRecord> records = mapRecordRepository.findAllByOrderByTimestampAsc();
-        if (records.isEmpty()) {
-            return ResponseEntity.ok(Map.of("available", false));
+        logger.debug("Map download request received");
+        try {
+            List<MapRecord> records = mapRecordRepository.findAllByOrderByTimestampAsc();
+            if (records.isEmpty()) {
+                logger.warn("No map records found");
+                return ResponseEntity.ok(Map.of("available", false));
+            }
+
+            MapRecord latestRecord = records.get(records.size() - 1);
+            logger.info("Map download successful - Timestamp: {}, Total records: {}", 
+                    latestRecord.getTimestamp(), records.size());
+
+            // Build the response including origin data
+            Map<String, Object> response = Map.of(
+                    "available", true,
+                    "map", Map.of(
+                            "info", latestRecord.getMapInfo(),
+                            "data", latestRecord.getMapData()),
+                    "global_costmap", Map.of(
+                            "info", latestRecord.getGlobalCostmapInfo(),
+                            "data", latestRecord.getGlobalCostmapData()),
+                    "local_costmap", Map.of(
+                            "info", latestRecord.getLocalCostmapInfo(),
+                            "data", latestRecord.getLocalCostmapData()),
+                    "transform", latestRecord.getTransformData());
+
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            logger.error("Error downloading map", e);
+            return ResponseEntity.status(500).body(Map.of("error", "Failed to download map"));
         }
-
-        MapRecord latestRecord = records.get(records.size() - 1);
-
-        // Build the response including origin data
-        Map<String, Object> response = Map.of(
-                "available", true,
-                "map", Map.of(
-                        "info", latestRecord.getMapInfo(),
-                        "data", latestRecord.getMapData()),
-                "global_costmap", Map.of(
-                        "info", latestRecord.getGlobalCostmapInfo(),
-                        "data", latestRecord.getGlobalCostmapData()),
-                "local_costmap", Map.of(
-                        "info", latestRecord.getLocalCostmapInfo(),
-                        "data", latestRecord.getLocalCostmapData()),
-                "transform", latestRecord.getTransformData());
-
-        return ResponseEntity.ok(response);
     }
 
     private void cleanOldRecords() {
-        List<MapRecord> records = mapRecordRepository.findAllByOrderByTimestampAsc();
-        while (records.size() > MAX_RECORDS) {
-            mapRecordRepository.delete(records.get(0));
-            records.remove(0);
+        logger.debug("Cleaning old map records");
+        try {
+            List<MapRecord> records = mapRecordRepository.findAllByOrderByTimestampAsc();
+            int deletedCount = 0;
+            while (records.size() > MAX_RECORDS) {
+                mapRecordRepository.delete(records.get(0));
+                records.remove(0);
+                deletedCount++;
+            }
+            if (deletedCount > 0) {
+                logger.info("Cleaned {} old map record(s)", deletedCount);
+            }
+        } catch (Exception e) {
+            logger.error("Error cleaning old records", e);
         }
     }
 }

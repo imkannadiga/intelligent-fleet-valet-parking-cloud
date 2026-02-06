@@ -3,6 +3,8 @@ package com.example.controlserver.Controllers;
 import com.example.controlserver.Models.UGV;
 import com.example.controlserver.Services.UGVService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,49 +18,88 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequestMapping("/api/ugv")
 public class UGVController {
 
+    private static final Logger logger = LoggerFactory.getLogger(UGVController.class);
+
     @Autowired
     private UGVService ugvService;
 
     @PostMapping
     public ResponseEntity<UGV> createUGV(@RequestBody UGV ugv) {
-        UGV createdUGV = ugvService.saveUGV(ugv);
-        return ResponseEntity.ok(createdUGV);
+        logger.info("Create UGV request received - Name: {}, Type: {}", ugv.getName(), ugv.getType());
+        try {
+            UGV createdUGV = ugvService.saveUGV(ugv);
+            logger.info("UGV created successfully - ID: {}, Name: {}", createdUGV.getId(), createdUGV.getName());
+            return ResponseEntity.ok(createdUGV);
+        } catch (Exception e) {
+            logger.error("Error creating UGV - Name: {}", ugv.getName(), e);
+            throw e;
+        }
     }
 
     @GetMapping
     public ResponseEntity<List<UGV>> getAllUGVs() {
-        List<UGV> ugvs = ugvService.getAllUGVs();
-        return ResponseEntity.ok(ugvs);
+        logger.debug("Get all UGVs request received");
+        try {
+            List<UGV> ugvs = ugvService.getAllUGVs();
+            logger.info("Retrieved {} UGV(s)", ugvs.size());
+            return ResponseEntity.ok(ugvs);
+        } catch (Exception e) {
+            logger.error("Error retrieving all UGVs", e);
+            throw e;
+        }
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<UGV> getUGVById(@PathVariable String id) {
-        UGV ugv = ugvService.getUGVById(id);
-        return ResponseEntity.ok(ugv);
+        logger.debug("Get UGV by ID request received - ID: {}", id);
+        try {
+            UGV ugv = ugvService.getUGVById(id);
+            logger.info("UGV retrieved successfully - ID: {}, Name: {}", id, ugv.getName());
+            return ResponseEntity.ok(ugv);
+        } catch (Exception e) {
+            logger.error("Error retrieving UGV - ID: {}", id, e);
+            throw e;
+        }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<UGV> updateUGV(@PathVariable String id, @RequestBody UGV ugvDetails) {
-        UGV updatedUGV = ugvService.updateUGV(id, ugvDetails);
-        return ResponseEntity.ok(updatedUGV);
+        logger.info("Update UGV request received - ID: {}", id);
+        try {
+            UGV updatedUGV = ugvService.updateUGV(id, ugvDetails);
+            logger.info("UGV updated successfully - ID: {}, Name: {}", id, updatedUGV.getName());
+            return ResponseEntity.ok(updatedUGV);
+        } catch (Exception e) {
+            logger.error("Error updating UGV - ID: {}", id, e);
+            throw e;
+        }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUGV(@PathVariable String id) {
-        ugvService.deleteUGV(id);
-        return ResponseEntity.noContent().build();
+        logger.info("Delete UGV request received - ID: {}", id);
+        try {
+            ugvService.deleteUGV(id);
+            logger.info("UGV deleted successfully - ID: {}", id);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            logger.error("Error deleting UGV - ID: {}", id, e);
+            throw e;
+        }
     }
 
     @PutMapping("/{id}/registerSession")
     public ResponseEntity<?> setSessionId(@PathVariable String id, @RequestBody Map<String, String> sessionId) {
+        logger.info("Register session request received - UGV ID: {}", id);
         try {
             ugvService.getUGVById(id);
+            UGV updated = ugvService.setUGVSessionID(id, sessionId.get("sessionId"));
+            logger.info("Session registered successfully - UGV ID: {}, Session ID: {}", id, sessionId.get("sessionId"));
+            return ResponseEntity.ok(updated);
         } catch (Exception e) {
-            // System.out.println("UGV not found");
+            logger.warn("Failed to register session - UGV ID: {}, Error: {}", id, e.getMessage());
             return ResponseEntity.status(404).body("Invalid UGV ID");
         }
-
-        return ResponseEntity.ok(ugvService.setUGVSessionID(id, sessionId.get("sessionId")));
     }
     
 
