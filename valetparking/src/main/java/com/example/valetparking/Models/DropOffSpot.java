@@ -21,6 +21,10 @@ public class DropOffSpot {
 
     private SpotType spotType;
 
+    public String getId() {
+        return id;
+    }
+
     public Map<String, Object> getCoordinates() {
         return coordinates;
     }

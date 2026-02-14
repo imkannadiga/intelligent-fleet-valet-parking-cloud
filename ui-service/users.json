@@ -1,42 +1,22 @@
 [
-    {
-        "email":"ugv_1@ias.uni-stuttgart.de",
-        "password":"Abcd@1234"
-    },
-    {
-        "email":"ugv_2@ias.uni-stuttgart.de",
-        "password":"Abcd@1234"
-    },
-    {
-        "email":"ugv_3@ias.uni-stuttgart.de",
-        "password":"Abcd@1234"
-    },
-    {
-        "email":"ugv_4@ias.uni-stuttgart.de",
-        "password":"Abcd@1234"
-    },
-    {
-        "email":"ugv_5@ias.uni-stuttgart.de",
-        "password":"Abcd@1234"
-    },
-    {
-        "email":"ugv_6@ias.uni-stuttgart.de",
-        "password":"Abcd@1234"
-    },
-    {
-        "email":"ugv_7@ias.uni-stuttgart.de",
-        "password":"Abcd@1234"
-    },
-    {
-        "email":"ugv_8@ias.uni-stuttgart.de",
-        "password":"Abcd@1234"
-    },
-    {
-        "email":"ugv_9@ias.uni-stuttgart.de",
-        "password":"Abcd@1234"
-    },
-    {
-        "email":"ugv_10@ias.uni-stuttgart.de",
-        "password":"Abcd@1234"
-    }
+  {
+    "email": "ugv_1@ias.uni-stuttgart.de",
+    "password": "Abcd@1234"
+  },
+  {
+    "email": "ugv_2@ias.uni-stuttgart.de",
+    "password": "Abcd@1234"
+  },
+  {
+    "email": "ugv_3@ias.uni-stuttgart.de",
+    "password": "Abcd@1234"
+  },
+  {
+    "email": "ugv_4@ias.uni-stuttgart.de",
+    "password": "Abcd@1234"
+  },
+  {
+    "email": "ugv_5@ias.uni-stuttgart.de",
+    "password": "Abcd@1234"
+  }
 ]
