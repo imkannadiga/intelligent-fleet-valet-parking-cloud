@@ -34,6 +34,13 @@ public class SecurityFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         logger.debug("Processing security filter for request: {} {}", request.getMethod(), request.getRequestURI());
         
+        // Skip token processing for login endpoint to allow re-authentication
+        if (request.getRequestURI().equals("/auth/login") && "POST".equals(request.getMethod())) {
+            logger.debug("Skipping token processing for login endpoint");
+            filterChain.doFilter(request, response);
+            return;
+        }
+        
         var token = this.recoverToken(request);
         if (token != null) {
             logger.debug("Token found in request header");
