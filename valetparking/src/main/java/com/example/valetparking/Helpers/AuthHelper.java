@@ -18,7 +18,7 @@ public class AuthHelper {
     @Autowired
     RestTemplate restTemplate;
     
-    private final String AUTH_SERVER_ADDRESS = "http://auth-service:10005/api";
+    private final String AUTH_SERVER_ADDRESS = "http://auth-service.valetparking.svc.cluster.local:10005/api";
 
     public Map<String, Object> validateToken(String token) {
         logger.debug("Validating token with auth service");

@@ -24,9 +24,9 @@ public class ControlHelper {
     @Autowired
     private HeartbeatHelper heartbeatHelper;
 
-    private final String CONTROL_SERVER_ADDRESS = "http://controlserver:10001/api";
+    private final String CONTROL_SERVER_ADDRESS = "http://controlserver.valetparking.svc.cluster.local:10001/api";
 
-    private final String CALLBACK_URL = "http://valetparking:9000/api/valetparking/action-complete";
+    private final String CALLBACK_URL = "http://valetparking.valetparking.svc.cluster.local:9000/api/valetparking/action-complete";
 
     private static final Logger logger = LoggerFactory.getLogger(ControlHelper.class);
 

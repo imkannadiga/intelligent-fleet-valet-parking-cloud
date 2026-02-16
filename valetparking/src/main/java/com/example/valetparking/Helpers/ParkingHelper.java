@@ -21,7 +21,7 @@ public class ParkingHelper {
     @Autowired
     private RestTemplate restTemplate;
 
-    private final String PARKING_SERVER_ADDRESS = "http://parking-spot-manager:9001/api/parking-spot";
+    private final String PARKING_SERVER_ADDRESS = "http://parking-spot-manager.valetparking.svc.cluster.local:9001/api/parking-spot";
 
     public Map<String, Object> getAndBlockAvailableParkingSpot() {
         logger.debug("Requesting available parking spot from parking spot manager");

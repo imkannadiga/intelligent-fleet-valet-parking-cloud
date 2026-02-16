@@ -18,7 +18,7 @@ public class HeartbeatHelper {
     @Autowired
     RestTemplate restTemplate;
 
-    private final String HEARTBEAT_SERVICE = "http://heartbeat-service:10010/api/ugv/heartbeat";
+    private final String HEARTBEAT_SERVICE = "http://heartbeat-service.valetparking.svc.cluster.local:10010/api/ugv/heartbeat";
 
     public boolean isUGVOnline(String ugvId) {
         logger.debug("Checking if UGV is online: {}", ugvId);

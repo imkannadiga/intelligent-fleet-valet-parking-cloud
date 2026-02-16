@@ -1,0 +1,92 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: valetparking-ingress
+  namespace: valetparking
+  annotations:
+spec:
+  ingressClassName: nginx  # Change this to match your ingress controller
+  rules:
+    # Control Server
+    - host: controlserver.valetparking.ias.uni-stuttgart.de
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: controlserver
+                port:
+                  number: 10001
+
+    # Map Server
+    - host: mapserver.valetparking.ias.uni-stuttgart.de
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: mapserver
+                port:
+                  number: 10002
+
+    # Heartbeat Service
+    - host: heartbeat-service.valetparking.ias.uni-stuttgart.de
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: heartbeat-service
+                port:
+                  number: 10010
+
+    # Auth Service
+    - host: auth-service.valetparking.ias.uni-stuttgart.de
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: auth-service
+                port:
+                  number: 10005
+
+    # UI Service
+    - host: ui-service.valetparking.ias.uni-stuttgart.de
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: ui-service
+                port:
+                  number: 80
+
+    # Parking Spot Manager
+    - host: parking-spot-manager.valetparking.ias.uni-stuttgart.de
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: parking-spot-manager
+                port:
+                  number: 9001
+
+    # Valet Parking Service
+    - host: valetparking.valetparking.ias.uni-stuttgart.de
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: valetparking
+                port:
+                  number: 9000

@@ -12,7 +12,7 @@ import org.springframework.web.client.RestTemplate;
 public class MapServerService {
 
     private static final Logger logger = LoggerFactory.getLogger(MapServerService.class);
-    private static final String MAP_SERVER_URL = "http://mapserver:10002/api/costmap/";
+    private static final String MAP_SERVER_URL = "http://mapserver.valetparking.svc.cluster.local:10002/api/costmap/";
 
     public Map<String, Object> getMap() {
         logger.debug("Fetching map from map server");

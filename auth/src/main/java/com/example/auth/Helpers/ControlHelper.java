@@ -23,7 +23,7 @@ public class ControlHelper {
     @Autowired
     private RestTemplate restTemplate;
 
-    private final String CONTROL_SERVER_ADDRESS = "http://controlserver:10001/api";
+    private final String CONTROL_SERVER_ADDRESS = "http://controlserver.valetparking.svc.cluster.local:10001/api";
 
     public List<UGV> getAllUGVs() {
         logger.debug("Fetching all UGVs from control server");
