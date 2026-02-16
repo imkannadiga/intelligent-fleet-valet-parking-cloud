@@ -117,15 +117,27 @@ def wait_random():
 # ---------------- Main Flow ----------------
 def user_flow(email, password):
     logger.info(f"Starting valet flow for {email}")
+    token = login(email, password)
+    if token:
+        logger.info(f"Login successful for {email}")
+    else:
+        logger.error(f"Login failed for {email}")
+        return
     while running:
         try:
-            token = login(email, password)
             req_id = park(token)
-            wait_until_complete(req_id)
-            wait_random()
-            req_id = retrieve(token)
-            wait_until_complete(req_id)
-            wait_random()
+            if token:
+                req_id = park(token)
+                wait_until_complete(req_id)
+                wait_random()
+                req_id = retrieve(token)
+                wait_until_complete(req_id)
+                wait_random()
+            else:
+                logger.error(f"Login failed for {email}")
+                time.sleep(10)
+            logger.error(f"Error for {email}: {e}")
+            time.sleep(10)
         except Exception as e:
             logger.error(f"Error for {email}: {e}")
             time.sleep(10)
